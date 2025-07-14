@@ -25,9 +25,10 @@ BUILD_DIR = os.path.join(os.path.dirname(__file__), "build")
 INDEX_HTML = os.path.join(BUILD_DIR, "index.html")
 
 # Serve static files from build directory
-app.mount(
-    "/assets", StaticFiles(directory=os.path.join(BUILD_DIR, "assets")), name="assets"
-)
+# Only mount /assets if the directory exists
+assets_dir = os.path.join(BUILD_DIR, "assets")
+if os.path.isdir(assets_dir):
+    app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
 
 
 @app.get("/")
